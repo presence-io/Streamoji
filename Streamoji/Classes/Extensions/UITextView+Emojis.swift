@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Streamoji
 
 fileprivate var renderViews: [EmojiSource: UIImageView] = [:]
 
@@ -17,19 +16,7 @@ extension UITextView {
     ///
     /// - Parameter emojis: A dictionary of emoji keyed by its shortcode.
     /// - Parameter rendering: The rendering options. Defaults to `.highQuality`.
-//    public func configureEmojis(_ emojis: [String: EmojiSource], rendering: EmojiRendering = .highQuality) {
-//        self.applyEmojis(emojis, rendering: rendering)
-//
-//        NotificationCenter.default.addObserver(
-//            forName: UITextView.textDidChangeNotification,
-//            object: self,
-//            queue: .main
-//        ) { [weak self] _ in
-//            self?.applyEmojis(emojis, rendering: rendering)
-//        }
-//    }
-    
-    @objc public func configureEmojis(_ emojis: NSDictionary, rendering: EmojiRenderingType = EmojiRenderingTypeHighQuality) {
+    public func configureEmojis(_ emojis: [String: EmojiSource], rendering: EmojiRendering = .highQuality) {
         self.applyEmojis(emojis, rendering: rendering)
 
         NotificationCenter.default.addObserver(
@@ -39,6 +26,61 @@ extension UITextView {
         ) { [weak self] _ in
             self?.applyEmojis(emojis, rendering: rendering)
         }
+    }
+    
+    @objc public func configureEmojis(_ emojis: NSDictionary , quality: Int) {
+        var rendering : EmojiRendering = .highQuality;
+        switch(quality) {
+        case 0:
+            rendering = .lowestQuality
+            break
+        case 1:
+            rendering = .lowQuality
+            break
+        case 2:
+            rendering = .mediumQuality
+            break
+        case 3:
+            rendering = .highQuality
+            break
+        case 4:
+            rendering = .highestQuality
+            break
+        default:
+            break;
+        }
+        
+        let dic = emojis as? [String : [String]];
+        guard let emojiDic : [String: EmojiSource] = dic?.mapValues({ values in
+            if(values.count < 2) {
+                return .character("")
+            }
+            var emoji : EmojiSource
+            switch(values[0]) {
+            case "character":
+                emoji = .character(values[1])
+                break
+                
+            case "imageUrl":
+                emoji = .imageUrl(values[1])
+                break
+                
+            case "imageAsset":
+                emoji = .imageAsset(values[1])
+                break
+                
+            case "alias":
+                emoji = .alias(values[1])
+                break
+            default:
+                emoji = .character(values[1])
+                break
+            }
+            return emoji
+        }) else {
+            return
+        }
+        configureEmojis(emojiDic, rendering: rendering)
     }
 }
 

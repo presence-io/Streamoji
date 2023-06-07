@@ -9,14 +9,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSInteger, EmojiRenderingType) {
-    EmojiRenderingTypeLowQuality,
-    EmojiRenderingTypeLowestQuality,
-    EmojiRenderingTypeMediumQuality,
-    EmojiRenderingTypeHighQuality,
-    EmojiRenderingTypeHighestQuality
-};
-
 typedef NS_ENUM(NSInteger, EmojiSourceType) {
     EmojiSourceTypeCharacter,
     EmojiSourceTypeImageUrl,
@@ -24,7 +16,7 @@ typedef NS_ENUM(NSInteger, EmojiSourceType) {
     EmojiSourceTypeAlias
 };
 
-@interface EmojiSource : NSObject
+@interface EmojiSource : NSObject<NSCopying>
 
 @property (nonatomic, assign) EmojiSourceType type;
 

@@ -40,7 +40,6 @@ Custom emoji rendering library for iOS apps with support for GIF & images
   # s.resource_bundles = {
   #   'Streamoji' => ['Streamoji/Assets/*.png']
   # }
-  s.xcconfig = { 'SWIFT_OBJC_BRIDGING_HEADER' => 'Streamoji-Bridging-Header.h' } 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
   # s.dependency 'AFNetworking', '~> 2.3'

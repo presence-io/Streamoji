@@ -20,9 +20,6 @@
     "ios": "12.0"
   },
   "source_files": "Streamoji/Classes/**/*",
-  "xcconfig": {
-    "SWIFT_OBJC_BRIDGING_HEADER": "Streamoji-Bridging-Header.h"
-  },
   "dependencies": {
     "SwiftyGif": [
       "~> 5.2"
