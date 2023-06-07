@@ -33,7 +33,7 @@ Custom emoji rendering library for iOS apps with support for GIF & images
   s.source           = { :git => 'https://github.com/GetStream/Streamoji.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/getstream_io'
 
-  s.ios.deployment_target = '10.0'
+  s.ios.deployment_target = '12.0'
 
   s.source_files = 'Streamoji/Classes/**/*'
   
