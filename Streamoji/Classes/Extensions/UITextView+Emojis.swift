@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Streamoji
 
 fileprivate var renderViews: [EmojiSource: UIImageView] = [:]
 
@@ -16,7 +17,19 @@ extension UITextView {
     ///
     /// - Parameter emojis: A dictionary of emoji keyed by its shortcode.
     /// - Parameter rendering: The rendering options. Defaults to `.highQuality`.
-    public func configureEmojis(_ emojis: [String: EmojiSource], rendering: EmojiRendering = .highQuality) {
+//    public func configureEmojis(_ emojis: [String: EmojiSource], rendering: EmojiRendering = .highQuality) {
+//        self.applyEmojis(emojis, rendering: rendering)
+//
+//        NotificationCenter.default.addObserver(
+//            forName: UITextView.textDidChangeNotification,
+//            object: self,
+//            queue: .main
+//        ) { [weak self] _ in
+//            self?.applyEmojis(emojis, rendering: rendering)
+//        }
+//    }
+    
+    @objc public func configureEmojis(_ emojis: NSDictionary, rendering: EmojiRenderingType = EmojiRenderingTypeHighQuality) {
         self.applyEmojis(emojis, rendering: rendering)
 
         NotificationCenter.default.addObserver(
