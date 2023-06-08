@@ -67,7 +67,7 @@ extension NSMutableAttributedString {
             let fontSize = (font?.pointSize ?? 22.0) * CGFloat(rendering.scale)
             var spacing : CGFloat = 0;
             if #available(iOS 15.0, *) {
-                spacing = 3.0
+                spacing = 1.0
                 emojiAttachment.lineLayoutPadding = spacing
             }
             emojiAttachment.bounds = CGRect(x: 0, y: fontSize * -0.23, width: fontSize * 1.23 + spacing * 2, height: fontSize * 1.23)
