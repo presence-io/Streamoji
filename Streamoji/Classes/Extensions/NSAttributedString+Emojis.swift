@@ -65,7 +65,12 @@ extension NSMutableAttributedString {
             
             let emojiAttachment = NSTextAttachment()
             let fontSize = (font?.pointSize ?? 22.0) * CGFloat(rendering.scale)
-            emojiAttachment.bounds = CGRect(x: 0, y: 0, width: fontSize, height: fontSize)
+            var spacing : CGFloat = 0;
+            if #available(iOS 15.0, *) {
+                spacing = 3.0
+                emojiAttachment.lineLayoutPadding = spacing
+            }
+            emojiAttachment.bounds = CGRect(x: 0, y: fontSize * -0.23, width: fontSize * 1.23 + spacing * 2, height: fontSize * 1.23)
             
             let emojiAttributedString = NSMutableAttributedString(attachment: emojiAttachment)
             
@@ -82,6 +87,17 @@ extension NSMutableAttributedString {
                 }
                 
                 emojiAttachment.contents = try! JSONEncoder().encode(emoji)
+                if case let .imageAsset(value) = emoji {
+                    if let asset = NSDataAsset(name: value),
+                       let gifImage = try? UIImage(gifData: asset.data, levelOfIntegrity: rendering.gifLevelOfIntegrity) {
+                        if let imageData = gifImage.imageData, (gifImage.imageCount ?? 0) < 1 {
+                            let image = UIImage(data: imageData)
+                            emojiAttachment.image = image
+                        }
+                    } else if let image = UIImage(named: value) {
+                        emojiAttachment.image = image
+                    }
+                }
                 self.replaceCharacters(
                     in: transformedRange,
                     with: emojiAttributedString

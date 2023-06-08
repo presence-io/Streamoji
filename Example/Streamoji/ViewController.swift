@@ -37,6 +37,7 @@ class ViewController: UIViewController {
         textView.isEditable = true
         textView.textAlignment = .center
         textView.font = .systemFont(ofSize: 32)
+        textView.backgroundColor = UIColor.green;
         view.addSubview(textView)
         
         textView.frame = view.frame
