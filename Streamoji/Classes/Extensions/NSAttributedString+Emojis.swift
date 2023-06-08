@@ -96,6 +96,15 @@ extension NSMutableAttributedString {
                         }
                     } else if let image = UIImage(named: value) {
                         emojiAttachment.image = image
+                    } else {
+                        let fileURL = URL(fileURLWithPath: value)
+                        let fileExtension = fileURL.pathExtension // 获取文件扩展名
+                        let fileName = fileURL.deletingPathExtension().lastPathComponent
+                        if let filePath = Bundle.main.path(forResource: fileName, ofType: fileExtension, inDirectory: "Data/Raw/Emojis") {
+                            if let image = UIImage(contentsOfFile: filePath) {
+                                emojiAttachment.image = image
+                            }
+                        }
                     }
                 }
                 self.replaceCharacters(
