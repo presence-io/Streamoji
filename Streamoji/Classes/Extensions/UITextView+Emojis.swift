@@ -50,33 +50,36 @@ extension UITextView {
             break;
         }
         
-        let dic = emojis as? [String : [String]];
+        let dic = emojis as? [String : [String : String]];
         guard let emojiDic : [String: EmojiSource] = dic?.mapValues({ values in
             if(values.count < 2) {
                 return .character("")
             }
             var emoji : EmojiSource
-            switch(values[0]) {
-            case "character":
-                emoji = .character(values[1])
-                break
-                
-            case "imageUrl":
-                emoji = .imageUrl(values[1])
-                break
-                
-            case "imageAsset":
-                emoji = .imageAsset(values[1])
-                break
-                
-            case "alias":
-                emoji = .alias(values[1])
-                break
-            default:
-                emoji = .character(values[1])
-                break
+            if let type = values["type"], let filename = values["filename"] {
+                switch(type) {
+                case "character":
+                    emoji = .character(filename)
+                    break
+                    
+                case "imageUrl":
+                    emoji = .imageUrl(filename)
+                    break
+                    
+                case "imageAsset":
+                    emoji = .imageAsset(filename)
+                    break
+                    
+                case "alias":
+                    emoji = .alias(filename)
+                    break
+                default:
+                    emoji = .character(filename)
+                    break
+                }
+                return emoji
             }
-            return emoji
+            return .character("")
         }) else {
             return
         }
