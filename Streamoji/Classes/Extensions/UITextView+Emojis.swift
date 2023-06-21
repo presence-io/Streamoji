@@ -28,7 +28,7 @@ extension UITextView {
         }
     }
     
-    @objc public func configureEmojis(_ emojis: NSDictionary , quality: Int) {
+    private func covertQualtyIntToRendering(quality: Int) -> EmojiRendering {
         var rendering : EmojiRendering = .highQuality;
         switch(quality) {
         case 0:
@@ -49,7 +49,10 @@ extension UITextView {
         default:
             break;
         }
-        
+        return rendering;
+    }
+    
+    private func convertEmojisToEmojiDic(_ emojis: NSDictionary) -> [String: EmojiSource] {
         let dic = emojis as? [String : [String : String]];
         guard let emojiDic : [String: EmojiSource] = dic?.mapValues({ values in
             if(values.count < 2) {
@@ -81,9 +84,21 @@ extension UITextView {
             }
             return .character("")
         }) else {
-            return
+            return [:]
         }
-        configureEmojis(emojiDic, rendering: rendering)
+        return emojiDic
+    }
+    
+    @objc public func applyEmojis(_ emojis: NSDictionary , quality: Int) {
+        let rendering : EmojiRendering = covertQualtyIntToRendering(quality: quality)
+        let emojisDic = convertEmojisToEmojiDic(emojis)
+        self.applyEmojis(emojisDic, rendering: rendering)
+    }
+    
+    @objc public func configureEmojis(_ emojis: NSDictionary , quality: Int) {
+        let rendering : EmojiRendering = covertQualtyIntToRendering(quality: quality)
+        let emojisDic = convertEmojisToEmojiDic(emojis)
+        configureEmojis(emojisDic, rendering: rendering)
     }
 }
 
