@@ -115,6 +115,10 @@ extension NSMutableAttributedString {
                         }
                     }
                 }
+                emojiAttributedString.addAttributes(
+                    [.emojiName: replacementString.string],
+                    range: .init(location: 0, length: emojiAttributedString.length)
+                )
                 self.replaceCharacters(
                     in: transformedRange,
                     with: emojiAttributedString
@@ -128,4 +132,10 @@ extension NSMutableAttributedString {
 
         return notMatched
     }
+}
+
+extension NSAttributedString.Key {
+    
+    public static let emojiName: NSAttributedString.Key = NSAttributedString.Key(rawValue: "emojiname")
+    
 }

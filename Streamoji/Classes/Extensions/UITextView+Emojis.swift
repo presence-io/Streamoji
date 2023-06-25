@@ -114,7 +114,7 @@ extension UITextView {
         let range = selectedRange
         let count = attributedText?.string.count ?? 0
         let tFont = font;
-        self.attributedText = attributedText.insertingEmojis(emojis, rendering: rendering, font:font)
+        self.attributedText = attributedText.insertingEmojis(emojis, rendering: rendering, font: font)
         font = tFont
         let newCount = attributedText.string.count
         customEmojiViews.forEach { $0.removeFromSuperview() }
