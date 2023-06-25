@@ -113,7 +113,9 @@ extension UITextView {
     private func applyEmojis(_ emojis: [String: EmojiSource], rendering: EmojiRendering) {
         let range = selectedRange
         let count = attributedText?.string.count ?? 0
+        let tFont = font;
         self.attributedText = attributedText.insertingEmojis(emojis, rendering: rendering)
+        font = tFont
         let newCount = attributedText.string.count
         customEmojiViews.forEach { $0.removeFromSuperview() }
         addEmojiImagesIfNeeded(rendering: rendering)
