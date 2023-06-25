@@ -10,7 +10,8 @@ import UIKit
 extension NSAttributedString {
     internal func insertingEmojis(
         _ emojis: [String: EmojiSource],
-        rendering: EmojiRendering
+        rendering: EmojiRendering,
+        font : UIFont?
     ) -> NSAttributedString {
         let attributedString = NSMutableAttributedString(attributedString: self)
 
@@ -18,13 +19,15 @@ extension NSAttributedString {
         let notMatched = attributedString.insertEmojis(
             emojis,
             in: string.filterOutRangesInsideCode(ranges: ranges),
-            rendering: rendering
+            rendering: rendering,
+            font: font
         )
         ranges = attributedString.getMatches(excludingRanges: notMatched)
         attributedString.insertEmojis(
             emojis,
             in: string.filterOutRangesInsideCode(ranges: ranges),
-            rendering: rendering
+            rendering: rendering,
+            font: font
         )
 
         return attributedString
@@ -48,11 +51,13 @@ extension NSAttributedString {
 }
 
 extension NSMutableAttributedString {
+    
     @discardableResult
     internal func insertEmojis(
         _ emojis: [String: EmojiSource],
         in ranges: [NSRange],
-        rendering: EmojiRendering
+        rendering: EmojiRendering,
+        font : UIFont?
     ) -> [NSRange] {
         var offset = 0
         var notMatched = [NSRange]()
@@ -60,11 +65,14 @@ extension NSMutableAttributedString {
         for range in ranges {
             let transformedRange = NSRange(location: range.location - offset, length: range.length)
             let replacementString = self.attributedSubstring(from: transformedRange)
-            let font = replacementString.attribute(.font, at: 0, effectiveRange: .none) as? UIFont
+            var theFont = font;
+            if let replacementFont = replacementString.attribute(.font, at: 0, effectiveRange: .none) as? UIFont {
+                theFont = replacementFont
+            }
             let paragraphStyle = replacementString.attribute(.paragraphStyle, at: 0, effectiveRange: .none) as? NSParagraphStyle
             
             let emojiAttachment = NSTextAttachment()
-            let fontSize = (font?.pointSize ?? 22.0) * CGFloat(rendering.scale)
+            let fontSize = (theFont?.pointSize ?? 22.0) * CGFloat(rendering.scale)
             var spacing : CGFloat = 0;
             if #available(iOS 15.0, *) {
                 spacing = 1.0
